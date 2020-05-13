@@ -22,18 +22,6 @@ class HaiXiaoSdk extends Foundation
         $config['debug'] = $config['debug'] ?? false;
         parent::__construct($config);
     }
-
-    /**
-     * 发送接口请求
-     * @param string $msgtype 报文类型
-     * @param array $order 订单数据
-     * @return mixed
-     */
-    public function request(string $msgtype, array $order)
-    {
-        return $this->api->request($msgtype, $order);
-    }
-
     /**
      * 可调用该API接口创建发货单
      * @param array $order 以数组的信息拼装
