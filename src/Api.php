@@ -3,6 +3,7 @@
 namespace Wored\HangZhouHaiXiaoSdk;
 
 use Hanson\Foundation\AbstractAPI;
+use Hanson\Foundation\Log;
 
 class Api extends AbstractAPI
 {
@@ -37,7 +38,9 @@ class Api extends AbstractAPI
             'msgtype'   => $msgtype,
         ];
         $requestUrl = $this->config['rootUrl'] . '?' . http_build_query($params);
+        Log::debug('Client Request:', compact('requestUrl', 'data'));
         $response = $this->https_request($requestUrl, $this->paramToXml($data));
+        Log::debug('API response:', compact('response'));
         $objectxml = simplexml_load_string($response);
         $xmljson = json_encode($objectxml);
         $xmlarray = json_decode($xmljson, true);
