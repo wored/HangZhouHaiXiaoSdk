@@ -38,13 +38,8 @@ class Api extends AbstractAPI
             'msgtype'   => $msgtype,
         ];
         $requestUrl = $this->config['rootUrl'] . '?' . http_build_query($params);
-        Log::debug('Client Request:', compact('requestUrl', 'data'));
-        $response = $this->https_request($requestUrl, $this->paramToXml($data));
-        Log::debug('API response:', compact('response'));
-        $objectxml = simplexml_load_string($response);
-        $xmljson = json_encode($objectxml);
-        $xmlarray = json_decode($xmljson, true);
-        return $xmlarray;
+        $response = $this->httpsRequest($requestUrl, $this->paramToXml($data));
+        return $response;
     }
 
     /**
@@ -53,8 +48,9 @@ class Api extends AbstractAPI
      * @param null $data
      * @return mixed
      */
-    public function https_request($url, $data = null)
+    public function httpsRequest($url, $data = null)
     {
+        Log::debug('Client Request:', compact('url', 'data'));
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
@@ -67,6 +63,7 @@ class Api extends AbstractAPI
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
         $output = curl_exec($curl);
         curl_close($curl);
+        Log::debug('API response:', compact('output'));
         return $output;
     }
 
